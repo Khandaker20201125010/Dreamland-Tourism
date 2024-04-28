@@ -1,5 +1,5 @@
 const express = require('express');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const cors = require('cors');
 require('dotenv').config();
 const app = express();
@@ -34,6 +34,17 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
      }) 
+     app.get("/torisum/:email",async(req,res)=>{
+      console.log(req.params.email);
+      const result = await toursimCollection.find({email:req.params.email}).toArray();
+      res.send(result)
+     })
+     app.delete('/tourism/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+      const result = await toursimCollection.deleteOne(query)
+      res.send(result)
+    })
     app.post('/torisum',async(req,res)=>{
       const newTorist = req.body;
       console.log(newTorist);
