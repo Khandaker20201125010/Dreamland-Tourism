@@ -30,7 +30,7 @@ async function run() {
 
     const toursimCollection = client.db( 'tourismdb').collection('tourism')
      app.get('/torisum',async(req,res)=>{
-      const cursor = toursimCollection.find();
+      const cursor = toursimCollection.find().sort( {"averageCost": -1 } );
       const result = await cursor.toArray();
       res.send(result);
      }) 
