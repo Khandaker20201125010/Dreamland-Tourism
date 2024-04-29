@@ -8,8 +8,7 @@ const port = process.env.PORT || 5000;
 //middleware//
 app.use(cors())
 app.use(express.json());
-// torisum
-//DcDk9q4a2QQnrEAv
+
 
 
 // const uri = `mongodb+srv://${process.env.DB_User}:${process.env.DB_Pass}@cluster0.texsw4y.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
@@ -40,10 +39,45 @@ async function run() {
       const result = await toursimCollection.find({email:req.params.email}).toArray();
       res.send(result)
      })
+    //  app.get("/tourism/:id",async(req,res)=>{
+    //   const id =req.params.id;
+    //   const query ={_id: new ObjectId(id)}
+    //   const result = await toursimCollection.findOne(query)
+    //   res.send(result)
+    //  })
+    app.get("/torisum/place/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await toursimCollection.findOne(query);
+      res.send(result);
+    });
      app.delete('/torisum/:id', async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) }
       const result = await toursimCollection.deleteOne(query)
+      res.send(result)
+    })
+    app.put('/torisum/place/:id', async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updatedTorisum= req.body
+      const  torisum = {
+        $set: {
+          name: updatedTorisum.name,
+          TouristSpotName: updatedTorisum.TouristSpotName,
+          countryName: updatedTorisum.countryName,
+          shortDescription: updatedTorisum.shortDescription,
+          averageCost: updatedTorisum.averageCost,
+          Location: updatedTorisum.Location,
+          seasonality: updatedTorisum.seasonality,
+          TotaVisitorsPerYear: updatedTorisum.TotaVisitorsPerYear,
+          travelTime: updatedTorisum.travelTime,
+          email: updatedTorisum.email,
+          Image: updatedTorisum.Image
+        }
+      }
+      const result = await toursimCollection.updateOne(filter,torisum,options)
       res.send(result)
     })
     app.post('/torisum',async(req,res)=>{
