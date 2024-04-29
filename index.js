@@ -12,8 +12,9 @@ app.use(express.json());
 //DcDk9q4a2QQnrEAv
 
 
+// const uri = `mongodb+srv://${process.env.DB_User}:${process.env.DB_Pass}@cluster0.texsw4y.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 const uri = `mongodb+srv://${process.env.DB_User}:${process.env.DB_Pass}@cluster0.texsw4y.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
-console.log(uri)
+
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
@@ -39,7 +40,7 @@ async function run() {
       const result = await toursimCollection.find({email:req.params.email}).toArray();
       res.send(result)
      })
-     app.delete('/tourism/:id', async (req, res) => {
+     app.delete('/torisum/:id', async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) }
       const result = await toursimCollection.deleteOne(query)
