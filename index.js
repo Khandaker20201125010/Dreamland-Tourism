@@ -28,7 +28,15 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
-    const toursimCollection = client.db( 'tourismdb').collection('tourism')
+    const toursimCollection = client.db('tourismdb').collection('tourism')
+    const newToursimCollection = client.db('tourismdb').collection('newtourism')
+
+    app.get('/newtourism', async (req, res) => {
+      const cursor = newToursimCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    })
+
      app.get('/torisum',async(req,res)=>{
       const cursor = toursimCollection.find().sort( {"averageCost": -1 } );
       const result = await cursor.toArray();
